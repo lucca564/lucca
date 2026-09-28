@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Financiera · Panel de control</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#eef1f5;--card:#fff;--tx:#12233b;--mu:#66768c;--bd:#dbe2ea;--hd:#0e2340;--ac:#b6862f;--pri:#0e2340;--prit:#fff;
+--ok:#166a3c;--okb:#dff3e6;--wa:#8a5a0a;--wab:#fcefd0;--er:#a62424;--erb:#fbe0e0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1523;--card:#13223a;--tx:#e6ecf5;--mu:#8fa0b8;--bd:#233650;--hd:#08111e;--ac:#d4a54a;--pri:#d4a54a;--prit:#0b1523;--ok:#6fd39a;--okb:#123a26;--wa:#f0c064;--wab:#3b2c0d;--er:#ff9a9a;--erb:#421a1a}}
+:root[data-theme="dark"]{--bg:#0b1523;--card:#13223a;--tx:#e6ecf5;--mu:#8fa0b8;--bd:#233650;--hd:#08111e;--ac:#d4a54a;--pri:#d4a54a;--prit:#0b1523;--ok:#6fd39a;--okb:#123a26;--wa:#f0c064;--wab:#3b2c0d;--er:#ff9a9a;--erb:#421a1a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.5 "IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-variant-numeric:tabular-nums}
+header{background:var(--hd);color:#fff;border-bottom:3px solid var(--ac)}
+.w{max-width:1120px;margin:0 auto;padding:0 16px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0 0;flex-wrap:wrap}
+.brand{font-size:18px;font-weight:600;letter-spacing:.2px}.brand small{display:block;font-weight:400;font-size:12px;opacity:.7}
+nav{display:flex;gap:2px;overflow-x:auto;margin-top:10px}
+.tab{background:none;border:0;color:#c5d0e0;padding:10px 16px;font:inherit;font-weight:500;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-3px;white-space:nowrap}
+.tab.on{color:#fff;border-color:var(--ac)}.tab:hover{color:#fff}
+.tab i{font-style:normal;background:var(--er);color:#fff;border-radius:9px;padding:0 7px;font-size:12px;margin-left:6px}
+main{padding:20px 0 40px}
+h2{font-size:20px;margin:0 0 4px;font-weight:600}.sub{color:var(--mu);margin:0 0 16px}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:22px}
+.k{background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--pri);border-radius:6px;padding:14px 16px}
+.k.e{border-left-color:var(--er)}.k.o{border-left-color:var(--ok)}
+.k span{color:var(--mu);font-size:13px}.k b{display:block;font-size:24px;font-weight:600;margin-top:2px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+input,select,textarea{font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:8px 10px;min-width:0}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid var(--ac);outline-offset:1px}
+.btn{font:inherit;font-weight:500;border-radius:6px;padding:8px 14px;cursor:pointer;border:1px solid var(--pri);background:var(--pri);color:var(--prit)}
+.btn.s{padding:5px 10px;font-size:13px}.btn.g{background:none;color:var(--tx);border-color:var(--bd)}.btn.w{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3);color:#fff}
+.sp{flex:1}
+.tw{background:var(--card);border:1px solid var(--bd);border-radius:6px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:640px}
+th{text-align:left;font-weight:600;font-size:13px;color:var(--mu);padding:10px 12px;border-bottom:1px solid var(--bd);background:var(--bg)}
+td{padding:10px 12px;border-bottom:1px solid var(--bd);vertical-align:middle}tr:last-child td{border-bottom:0}
+.r{text-align:right;white-space:nowrap}.mu{color:var(--mu);font-size:12px}
+.b{display:inline-block;padding:1px 9px;border-radius:10px;font-size:12px;font-weight:600}
+.b.ok{background:var(--okb);color:var(--ok)}.b.wa{background:var(--wab);color:var(--wa)}.b.er{background:var(--erb);color:var(--er)}
+.ch{display:inline-flex;flex-direction:column;align-items:flex-start;border:1px solid var(--bd);border-radius:6px;padding:4px 9px;margin:2px 4px 2px 0;background:none;color:var(--tx);font:inherit;font-size:12px;cursor:pointer;text-align:left;min-width:104px}
+.ch b{font-size:13px}.ch.ok{background:var(--okb);border-color:transparent;color:var(--ok)}.ch.late{background:var(--erb);border-color:transparent;color:var(--er)}.ch.pend{background:var(--wab);border-color:transparent;color:var(--wa)}
+.emp{padding:36px 16px;text-align:center;color:var(--mu)}
+.tot{background:var(--bg);font-weight:600}
+#m{position:fixed;inset:0;background:rgba(6,14,26,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:9}
+#m.on{display:flex}.md{background:var(--card);border-radius:8px;padding:20px;width:100%;max-width:440px;max-height:90vh;overflow:auto}
+.md h3{margin:0 0 12px;font-size:17px}.fl{display:block;margin-bottom:10px;color:var(--mu);font-size:13px}.fl input,.fl textarea{display:block;width:100%;margin-top:3px;color:var(--tx)}
+.ac{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}.hint{background:var(--wab);color:var(--wa);border-radius:6px;padding:8px 10px;margin:8px 0;font-size:13px}
+@media print{:root,:root:not([data-theme="light"]),:root[data-theme="dark"]{--bg:#fff!important;--card:#fff!important;--tx:#12233b!important;--mu:#555!important;--bd:#ccc!important;--pri:#0e2340!important;--ok:#166a3c!important;--okb:#dff3e6!important;--wa:#8a5a0a!important;--wab:#fcefd0!important;--er:#a62424!important;--erb:#fbe0e0!important}
+header,#bar,.bar button,.bar input{display:none!important}.tw{overflow:visible}table{min-width:0;font-size:12px}.k,.tw{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header><div class="w">
+<div class="top"><div class="brand">Financiera<small>Panel de control de préstamos y cobranzas</small></div>
+<button class="btn w s" onclick="backup()">Copia de seguridad</button></div>
+<nav id="nav"></nav></div></header>
+<main class="w">
+<div id="bar" class="bar"></div>
+<div id="v"></div>
+</main>
+<div id="m"><div class="md" id="mb"></div></div>
+<script>
+const K='financiera_v1',RATE=0.5;
+let db=[];try{db=JSON.parse(localStorage.getItem(K)||'[]')}catch(e){db=[]}
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(db))}catch(e){}};
+const $=s=>document.querySelector(s),pad=n=>String(n).padStart(2,'0');
+const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const today=()=>iso(new Date());
+const add=(s,n)=>{const[y,m,d]=s.split('-').map(Number);return iso(new Date(y,m-1,d+n))};
+const fd=s=>{const[y,m,d]=s.split('-');return d+'/'+m+'/'+y};
+const $$=n=>'$ '+Math.round(n).toLocaleString('es-AR');
+const days=(a,b)=>Math.round((new Date(b+'T00:00')-new Date(a+'T00:00'))/864e5);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const st=c=>c.paid?'ok':(c.due<today()?'late':'pend');
+const BD={ok:['Pagado','ok'],late:['Vencido','er'],pend:['Pendiente','wa']};
+const badge=s=>`<span class="b ${BD[s][1]}">${BD[s][0]}</span>`;
+const lst=l=>l.inst.every(c=>c.paid)?'ok':l.inst.some(c=>st(c)=='late')?'late':'pend';
+function mk(l,old){const n=l.type=='m'?1:4;l.inst=[];for(let i=0;i<n;i++){const o=(old&&old[i])||{};l.inst.push({n:i+1,due:add(l.date,l.type=='m'?30:7*(i+1)),amt:l.amount/n,paid:o.paid||null,int:o.int||0})}}
+let tab='res';
+const TABS=[['res','Resumen'],['m','Deudores mensuales'],['s','Comerciantes semanales'],['mor','Morosos'],['rep','Reporte mensual']];
+function late(){const o=[];db.forEach(l=>l.inst.forEach((c,i)=>{if(st(c)=='late')o.push({l,c,i,d:days(c.due,today()),int:c.amt*RATE})}));return o.sort((a,b)=>b.d-a.d)}
+function go(t){tab=t;render()}
+function render(){
+ const ml=late();
+ $('#nav').innerHTML=TABS.map(t=>`<button class="tab ${t[0]==tab?'on':''}" onclick="go('${t[0]}')">${t[1]}${t[0]=='mor'&&ml.length?`<i>${ml.length}</i>`:''}</button>`).join('');
+ const q=(($('#q')||{}).value||'').toLowerCase(),f=($('#f')||{}).value||'';
+ const isL=tab=='m'||tab=='s';
+ if(!isL||!$('#q')){$('#bar').innerHTML=isL?'':''}
+ if(isL&&!$('#q')){$('#bar').innerHTML=`<input id="q" placeholder="Buscar por nombre" oninput="render()"><select id="f" onchange="render()"><option value="">Todos los estados</option><option value="pend">Pendientes</option><option value="late">Vencidos</option><option value="ok">Pagados</option></select><span class="sp"></span><button class="btn" onclick="openForm(null,'${tab}')">${tab=='m'?'Nuevo deudor':'Nuevo comerciante'}</button>`}
+ else if(isL){$('#bar').querySelector('.btn').setAttribute('onclick',`openForm(null,'${tab}')`);$('#bar').querySelector('.btn').textContent=tab=='m'?'Nuevo deudor':'Nuevo comerciante'}
+ $('#v').innerHTML=tab=='res'?vRes(ml):tab=='mor'?vMor(ml):tab=='rep'?vRep():vList(q,f);
+}
+function vRes(ml){
+ const all=db.flatMap(l=>l.inst);
+ const prest=db.reduce((s,l)=>s+l.amount,0);
+ const cob=all.filter(c=>c.paid).reduce((s,c)=>s+c.amt+c.int,0);
+ const pen=all.filter(c=>!c.paid).reduce((s,c)=>s+c.amt+(c.due<today()?c.amt*RATE:0),0);
+ const intr=all.filter(c=>c.paid).reduce((s,c)=>s+c.int,0)+ml.reduce((s,x)=>s+x.int,0);
+ const lim=add(today(),7);
+ const nx=[];db.forEach(l=>l.inst.forEach((c,i)=>{if(!c.paid&&c.due>=today()&&c.due<=lim)nx.push({l,c,i})}));nx.sort((a,b)=>a.c.due<b.c.due?-1:1);
+ return `<h2>Resumen</h2><p class="sub">Estado general de la cartera al ${fd(today())}.</p>
+ <div class="kp"><div class="k"><span>Total prestado / a cobrar</span><b>${$$(prest)}</b></div>
+ <div class="k o"><span>Cobrado</span><b>${$$(cob)}</b></div>
+ <div class="k"><span>Pendiente de cobro</span><b>${$$(pen)}</b></div>
+ <div class="k e"><span>Cuotas en mora</span><b>${ml.length}</b></div>
+ <div class="k e"><span>Interés por mora (50%)</span><b>${$$(intr)}</b></div></div>
+ <h2 style="font-size:16px">Vencen en los próximos 7 días</h2><p class="sub"></p>
+ <div class="tw">${nx.length?`<table><tr><th>Cliente</th><th>Tipo</th><th>Cuota</th><th>Vence</th><th class="r">Monto</th></tr>${nx.map(x=>`<tr><td>${esc(x.l.name)}</td><td>${x.l.type=='m'?'Mensual':'Semanal'}</td><td>${x.c.n}/${x.l.inst.length}</td><td>${fd(x.c.due)}</td><td class="r">${$$(x.c.amt)}</td></tr>`).join('')}</table>`:`<div class="emp">No hay vencimientos en los próximos 7 días.</div>`}</div>`}
+function vList(q,f){
+ const isM=tab=='m';
+ const L=db.filter(l=>l.type==tab&&l.name.toLowerCase().includes(q)&&(!f||lst(l)==f));
+ const head=isM?'<th>Cliente</th><th>Préstamo</th><th>Vence (30 días)</th><th class="r">Monto</th><th>Estado</th>':'<th>Comerciante</th><th class="r">Total</th><th>Cuotas (tocá una para registrar el pago)</th><th class="r">Saldo</th>';
+ const rows=L.map(l=>{
+  const nm=`<td><b>${esc(l.name)}</b><div class="mu">${esc(l.phone)}</div></td>`;
+  const c0=l.inst[0];
+  const mid=isM?`<td>${fd(l.date)}</td><td>${fd(c0.due)}</td><td class="r">${$$(c0.amt)}</td><td>${badge(st(c0))}${c0.paid?`<div class="mu">Cobrado el ${fd(c0.paid)}${c0.int?' · con interés '+$$(c0.int):''}</div>`:''}</td>`
+   :`<td class="r">${$$(l.amount)}</td><td>${l.inst.map((c,i)=>`<button class="ch ${st(c)}" onclick="pay('${l.id}',${i})"><b>${c.n}/4 · ${$$(c.amt)}</b>${c.paid?'Pagó '+fd(c.paid):'Vence '+fd(c.due)}</button>`).join('')}</td><td class="r">${$$(l.inst.filter(c=>!c.paid).reduce((s,c)=>s+c.amt,0))}</td>`;
+  const act=`<td class="r">${isM?`<button class="btn s" onclick="pay('${l.id}',0)">${c0.paid?'Ver pago':'Registrar pago'}</button> `:''}<button class="btn s g" onclick="openForm('${l.id}')">Editar</button> <button class="btn s g" onclick="del('${l.id}',this)">Eliminar</button></td>`;
+  return `<tr>${nm}${mid}${act}</tr>`}).join('');
+ return `<h2>${isM?'Deudores mensuales':'Comerciantes semanales'}</h2><p class="sub">${isM?'Una cuota con vencimiento a los 30 días del préstamo.':'Cuatro cuotas iguales, una por semana. Cada pago se registra con su fecha real.'}</p>
+ <div class="tw">${L.length?`<table><tr>${head}<th></th></tr>${rows}</table>`:`<div class="emp">${db.some(l=>l.type==tab)?'Ningún resultado con ese filtro.':'Todavía no cargaste registros. Usá el botón de arriba para agregar el primero.'}</div>`}</div>`}
+function vMor(ml){
+ const tI=ml.reduce((s,x)=>s+x.int,0),tA=ml.reduce((s,x)=>s+x.c.amt,0);
+ return `<h2>Morosos</h2><p class="sub">Cuotas vencidas sin pagar. Se suma un ${RATE*100}% de interés sobre el monto de cada cuota.</p>
+ <div class="tw">${ml.length?`<table><tr><th>Cliente</th><th>Tipo</th><th>Cuota</th><th>Venció</th><th class="r">Atraso</th><th class="r">Monto</th><th class="r">Interés ${RATE*100}%</th><th class="r">Total a cobrar</th><th></th></tr>
+ ${ml.map(x=>`<tr><td><b>${esc(x.l.name)}</b><div class="mu">${esc(x.l.phone)}</div></td><td>${x.l.type=='m'?'Mensual':'Semanal'}</td><td>${x.c.n}/${x.l.inst.length}</td><td>${fd(x.c.due)}</td><td class="r">${x.d} ${x.d==1?'día':'días'}</td><td class="r">${$$(x.c.amt)}</td><td class="r" style="color:var(--er)">${$$(x.int)}</td><td class="r"><b>${$$(x.c.amt+x.int)}</b></td><td class="r"><button class="btn s" onclick="pay('${x.l.id}',${x.i})">Cobrar</button></td></tr>`).join('')}
+ <tr class="tot"><td colspan="5">Total (${ml.length} ${ml.length==1?'cuota':'cuotas'})</td><td class="r">${$$(tA)}</td><td class="r">${$$(tI)}</td><td class="r">${$$(tA+tI)}</td><td></td></tr></table>`:`<div class="emp">No hay cuotas en mora. Todo está al día.</div>`}</div>`}
+let rm=today().slice(0,7);
+const MES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+function mv(n){const[y,m]=rm.split('-').map(Number),d=new Date(y,m-1+n,1);rm=d.getFullYear()+'-'+pad(d.getMonth()+1);render()}
+function setM(v){if(v){rm=v;render()}}
+function chart(){
+ const[y,m]=rm.split('-').map(Number),D=[];
+ for(let i=5;i>=0;i--){const d=new Date(y,m-1-i,1),k=d.getFullYear()+'-'+pad(d.getMonth()+1);
+  const pr=db.filter(l=>l.date.slice(0,7)==k).reduce((s,l)=>s+l.amount,0);
+  const cb=db.flatMap(l=>l.inst).filter(c=>c.paid&&c.paid.slice(0,7)==k).reduce((s,c)=>s+c.amt+c.int,0);
+  D.push({l:MES[d.getMonth()].slice(0,3),pr,cb})}
+ const mx=Math.max(1,...D.flatMap(x=>[x.pr,x.cb])),H=140,W=600,bw=26,g=(W-20)/6;
+ const cp=n=>n?n.toLocaleString('es-AR',{notation:'compact',maximumFractionDigits:1}):'';
+ const bars=D.map((x,i)=>{const cx=10+g*i+g/2,h1=x.pr/mx*H,h2=x.cb/mx*H;
+  return `<rect x="${cx-bw-2}" y="${170-h1}" width="${bw}" height="${h1}" rx="2" fill="var(--pri)"><title>Prestado ${$$(x.pr)}</title></rect><rect x="${cx+2}" y="${170-h2}" width="${bw}" height="${h2}" rx="2" fill="var(--ok)"><title>Cobrado ${$$(x.cb)}</title></rect><text x="${cx-bw/2-2}" y="${166-h1}" font-size="10" text-anchor="middle" fill="var(--mu)">${cp(x.pr)}</text><text x="${cx+bw/2+2}" y="${166-h2}" font-size="10" text-anchor="middle" fill="var(--mu)">${cp(x.cb)}</text><text x="${cx}" y="188" font-size="12" text-anchor="middle" fill="var(--tx)">${x.l}</text>`}).join('');
+ return `<div class="k" style="margin-bottom:22px;border-left-color:var(--bd)"><span>Evolución de los últimos 6 meses</span><svg viewBox="0 0 ${W} 196" style="width:100%;height:auto;display:block;margin-top:8px" role="img" aria-label="Prestado y cobrado por mes">${bars}<line x1="10" x2="590" y1="170" y2="170" stroke="var(--bd)"/></svg><div class="mu"><span style="color:var(--pri)">■</span> Prestado &nbsp; <span style="color:var(--ok)">■</span> Cobrado (capital + interés)</div></div>`}
+function vRep(){
+ const inM=s=>!!s&&s.slice(0,7)==rm,[yy,mm]=rm.split('-').map(Number);
+ const S=k=>{const L=db.filter(l=>k=='t'||l.type==k),cs=L.flatMap(l=>l.inst.map(c=>({l,c}))),nw=L.filter(l=>inM(l.date)),cb=cs.filter(x=>inM(x.c.paid)),vn=cs.filter(x=>inM(x.c.due)),mo=vn.filter(x=>!x.c.paid&&x.c.due<today());
+  const sm=(a,f)=>a.reduce((s,x)=>s+f(x),0);
+  return{nn:nw.length,pr:sm(nw,l=>l.amount),nc:cb.length,cap:sm(cb,x=>x.c.amt),it:sm(cb,x=>x.c.int),tot:sm(cb,x=>x.c.amt+x.c.int),nv:vn.length,mv:sm(vn,x=>x.c.amt),nm:mo.length,mm:sm(mo,x=>x.c.amt*(1+RATE))}};
+ const A=S('m'),B=S('s'),T=S('t'),net=T.tot-T.pr;
+ const R=[['Préstamos otorgados','nn'],['Monto prestado','pr',1],['Cuotas cobradas','nc'],['Capital cobrado','cap',1],['Interés por mora cobrado','it',1],['Total cobrado','tot',1],['Cuotas que vencían en el mes','nv'],['Monto que vencía','mv',1],['Cuotas en mora del mes','nm'],['Mora a cobrar (con interés)','mm',1]];
+ const f=(o,k,mn)=>mn?$$(o[k]):o[k];
+ const pays=[];db.forEach(l=>l.inst.forEach(c=>{if(inM(c.paid))pays.push({l,c})}));pays.sort((p,q)=>p.c.paid<q.c.paid?-1:1);
+ const ml=late().filter(x=>inM(x.c.due));
+ return `<h2>Reporte mensual</h2><p class="sub">Movimientos de la cartera durante el mes elegido.</p>
+ <div class="bar"><button class="btn g" onclick="mv(-1)">‹ Anterior</button><input type="month" value="${rm}" onchange="setM(this.value)"><button class="btn g" onclick="mv(1)">Siguiente ›</button><b style="margin-left:8px;font-size:16px">${MES[mm-1][0].toUpperCase()+MES[mm-1].slice(1)} de ${yy}</b></div>
+ <div class="kp"><div class="k"><span>Prestado en el mes</span><b>${$$(T.pr)}</b></div>
+ <div class="k o"><span>Cobrado en el mes</span><b>${$$(T.tot)}</b></div>
+ <div class="k o"><span>Interés por mora cobrado</span><b>${$$(T.it)}</b></div>
+ <div class="k ${net<0?'e':'o'}"><span>Flujo neto (cobrado − prestado)</span><b>${$$(net)}</b></div>
+ <div class="k e"><span>Mora a cobrar del mes</span><b>${$$(T.mm)}</b></div></div>
+ ${chart()}<div class="tw" style="margin-bottom:22px"><table><tr><th>Concepto</th><th class="r">Deudores mensuales</th><th class="r">Comerciantes semanales</th><th class="r">Total</th></tr>
+ ${R.map(r=>`<tr class="${r[1]=='tot'?'tot':''}"><td>${r[0]}</td><td class="r">${f(A,r[1],r[2])}</td><td class="r">${f(B,r[1],r[2])}</td><td class="r">${f(T,r[1],r[2])}</td></tr>`).join('')}</table></div>
+ <h2 style="font-size:16px">Cobros del mes</h2><p class="sub"></p>
+ <div class="tw" style="margin-bottom:22px">${pays.length?`<table><tr><th>Fecha</th><th>Cliente</th><th>Tipo</th><th>Cuota</th><th class="r">Capital</th><th class="r">Interés</th><th class="r">Total</th></tr>${pays.map(x=>`<tr><td>${fd(x.c.paid)}</td><td>${esc(x.l.name)}</td><td>${x.l.type=='m'?'Mensual':'Semanal'}</td><td>${x.c.n}/${x.l.inst.length}</td><td class="r">${$$(x.c.amt)}</td><td class="r">${$$(x.c.int)}</td><td class="r"><b>${$$(x.c.amt+x.c.int)}</b></td></tr>`).join('')}</table>`:`<div class="emp">No se registraron cobros en este mes.</div>`}</div>
+ <h2 style="font-size:16px">Cuotas del mes vencidas y sin cobrar</h2><p class="sub"></p>
+ <div class="tw">${ml.length?`<table><tr><th>Cliente</th><th>Tipo</th><th>Cuota</th><th>Venció</th><th class="r">Atraso</th><th class="r">Monto</th><th class="r">Interés ${RATE*100}%</th><th class="r">Total</th></tr>${ml.map(x=>`<tr><td>${esc(x.l.name)}</td><td>${x.l.type=='m'?'Mensual':'Semanal'}</td><td>${x.c.n}/${x.l.inst.length}</td><td>${fd(x.c.due)}</td><td class="r">${x.d} ${x.d==1?'día':'días'}</td><td class="r">${$$(x.c.amt)}</td><td class="r" style="color:var(--er)">${$$(x.int)}</td><td class="r"><b>${$$(x.c.amt+x.int)}</b></td></tr>`).join('')}</table>`:`<div class="emp">No hay cuotas vencidas sin cobrar de este mes.</div>`}</div>`}
+function modal(h){$('#mb').innerHTML=h;$('#m').classList.add('on')}
+function closeM(){$('#m').classList.remove('on')}
+$('#m').addEventListener('click',e=>{if(e.target.id=='m')closeM()});
+function openForm(id,t){
+ const l=id?db.find(x=>x.id==id):{type:t,name:'',phone:'',amount:'',date:today()};
+ modal(`<h3>${id?'Editar':'Nuevo'} ${l.type=='m'?'deudor mensual':'comerciante semanal'}</h3>
+ <label class="fl">Nombre<input id="fn" value="${esc(l.name)}"></label>
+ <label class="fl">Teléfono (opcional)<input id="fp" value="${esc(l.phone)}"></label>
+ <label class="fl">Monto total a cobrar (ARS)<input id="fa" type="number" min="0" step="any" value="${l.amount}"></label>
+ <label class="fl">Fecha del préstamo<input id="fd" type="date" value="${l.date}"></label>
+ <div class="mu">${l.type=='m'?'Se genera 1 cuota a 30 días.':'Se generan 4 cuotas semanales de igual monto.'}</div><div id="er" class="hint" style="display:none"></div>
+ <div class="ac"><button class="btn g" onclick="closeM()">Cancelar</button><button class="btn" onclick="saveF('${id||''}','${l.type}')">Guardar</button></div>`)}
+function saveF(id,type){
+ const n=$('#fn').value.trim(),a=parseFloat($('#fa').value),d=$('#fd').value;
+ if(!n||!(a>0)||!d){const e=$('#er');e.style.display='block';e.textContent='Completá el nombre, un monto mayor a 0 y la fecha.';return}
+ if(id){const l=db.find(x=>x.id==id),o=l.inst;Object.assign(l,{name:n,phone:$('#fp').value.trim(),amount:a,date:d});mk(l,o)}
+ else{const l={id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),type,name:n,phone:$('#fp').value.trim(),amount:a,date:d};mk(l);db.push(l)}
+ save();closeM();render()}
+function del(id,b){if(b.dataset.a){db=db.filter(x=>x.id!=id);save();render()}else{b.dataset.a=1;b.textContent='¿Seguro?';setTimeout(()=>{b.dataset.a='';b.textContent='Eliminar'},3000)}}
+function pay(id,i){
+ const l=db.find(x=>x.id==id),c=l.inst[i];
+ modal(`<h3>Cuota ${c.n}/${l.inst.length} · ${esc(l.name)}</h3>
+ <p class="mu" style="margin:0 0 8px">Vence el ${fd(c.due)} · Monto ${$$(c.amt)}</p>
+ <label class="fl">Fecha de pago<input id="pd" type="date" value="${c.paid||today()}" oninput="prev(${c.amt},'${c.due}')"></label>
+ <div id="pv" class="hint"></div>
+ <div class="ac">${c.paid?`<button class="btn g" onclick="unpay('${id}',${i})">Anular pago</button>`:''}<button class="btn g" onclick="closeM()">Cancelar</button><button class="btn" onclick="doPay('${id}',${i})">Guardar pago</button></div>`);prev(c.amt,c.due)}
+function prev(a,due){const d=$('#pd').value,late=d&&d>due;$('#pv').innerHTML=late?`Pago fuera de término: se suma el ${RATE*100}% de interés (${$$(a*RATE)}). Total a cobrar: <b>${$$(a*(1+RATE))}</b>`:`Pago en término. Total a cobrar: <b>${$$(a)}</b>`}
+function doPay(id,i){const c=db.find(x=>x.id==id).inst[i],d=$('#pd').value;if(!d)return;c.paid=d;c.int=d>c.due?c.amt*RATE:0;save();closeM();render()}
+function unpay(id,i){const c=db.find(x=>x.id==id).inst[i];c.paid=null;c.int=0;save();closeM();render()}
+function backup(){
+ modal(`<h3>Copia de seguridad</h3><p class="mu" style="margin:0 0 8px">Copiá este texto y guardalo en un lugar seguro. Para restaurar, pegá una copia y tocá Importar (reemplaza los datos actuales).</p>
+ <textarea id="bk" rows="8" style="width:100%;font:12px monospace">${esc(JSON.stringify(db))}</textarea><div id="er" class="hint" style="display:none"></div>
+ <div class="ac"><button class="btn g" onclick="closeM()">Cerrar</button><button class="btn g" onclick="imp()">Importar</button><button class="btn" onclick="cp()">Copiar</button></div>`)}
+function cp(){const t=$('#bk');t.select();try{document.execCommand('copy')}catch(e){}}
+function imp(){try{const d=JSON.parse($('#bk').value);if(!Array.isArray(d)||d.some(l=>!l.inst||!l.name))throw 0;db=d;save();closeM();render()}catch(e){const x=$('#er');x.style.display='block';x.textContent='El texto no es una copia válida.'}}
+render();
+</script>
+</body>
+</html>
